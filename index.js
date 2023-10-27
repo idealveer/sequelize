@@ -19,6 +19,21 @@ app.get('/query',userCtrl.queryUsers)
 app.get('/finders',userCtrl.findersUsers)
 app.get('/get-set-virtual',userCtrl.getSetVirtual)
 app.get('/validate',userCtrl.validateUser)
+app.get('/raw-queries',userCtrl.rawQueriesUser)
+app.get('/one-to-one',userCtrl.oneToOneUser)
+app.get('/one-to-many',userCtrl.oneToManyUser)
+app.get('/many-to-many',userCtrl.manyToManyUser)
+app.get('/paranoid',userCtrl.paranoidUser)
+app.get('/loading',userCtrl.loadingUser)
+app.get('/eager',userCtrl.eagerUser)
+app.get('/creator',userCtrl.creatorUser)
+app.get('/m-n-associations',userCtrl.mnAssociations)
+
+
+
+
+
+
 
 
 

@@ -25,7 +25,7 @@ module.exports = (DataTypes, sequelize) => {
         set(value) {
           // Storing passwords in plaintext in the database is terrible.
           // Hashing the value with an appropriate cryptographic hash function is better.
-          this.setDataValue('lastName', value + ',Indian');
+          this.setDataValue('lastName', value );
         }
 
 
@@ -43,6 +43,8 @@ module.exports = (DataTypes, sequelize) => {
     {
       // Other model options go here
       tableName: "users",
+      paranoid: true,
+      deletedAt: 'soft_delete'
     }
   );
 

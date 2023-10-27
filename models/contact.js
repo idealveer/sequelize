@@ -1,3 +1,4 @@
+
 module.exports = (DataTypes, sequelize) => {
   const Contact = sequelize.define(
     "contacts",
@@ -11,6 +12,7 @@ module.exports = (DataTypes, sequelize) => {
         type: DataTypes.STRING,
         // allowNull defaults to true
       },
+      UserId: DataTypes.INTEGER
     },
     {
       // Other model options go here
