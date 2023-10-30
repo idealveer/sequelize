@@ -717,24 +717,103 @@ var ImageCommentData=  await Comment.findAll({
 
 
 const polymanyToMany = async (req,res)=>{
- var imagedata = await Image.create({title:'first Image',url:"first_url"})
-var data = {}
-var viedodata = await Viedo.create({title:'first viedo',text:"Awesome viedo"})
-var Tagdata = await Tag.create({name:'Node js'})
+//  var imagedata = await Image.create({title:'first Image',url:"first_url"})
+// var data = {}
+// var viedodata = await Viedo.create({title:'first viedo',text:"Awesome viedo"})
+// var Tagdata = await Tag.create({name:'Node js'})
 
 
-if(Tagdata && Tagdata.id  &&  imagedata && imagedata.id){
-  await Tag_Taggable.create({tagId:Tagdata.id, 
-    taggableId : imagedata.id ,taggableType:'image'})
+// if(Tagdata && Tagdata.id  &&  imagedata && imagedata.id){
+//   await Tag_Taggable.create({tagId:Tagdata.id, 
+//     taggableId : imagedata.id ,taggableType:'image'})
 
  
-}
-if(Tagdata && Tagdata.id  && viedodata &&  viedodata.id){
-  await Tag_Taggable.create({tagId:Tagdata.id ,taggableId : viedodata.id
-  ,taggableType : "viedo"})
-}
+// }
+// if(Tagdata && Tagdata.id  && viedodata &&  viedodata.id){
+//   await Tag_Taggable.create({tagId:Tagdata.id ,taggableId : viedodata.id
+//   ,taggableType : "viedo"})
+// }
+
+  // var data = await Image.findAll({
+  //   include:[Tag]
+  // })
+
+
+
+  // var data = await Viedo.findAll({
+  //   include:[Tag]
+  // })
+
+  var data = await Tag.findAll({
+    include:[Image,Viedo]
+  })
+
+
   res.status(200).json({data:data})
 }
+
+const queryInterface = async(req,res)=>{
+
+var data = {}
+const queryInterface = db.sequelize.getQueryInterface();
+
+// queryInterface.createTable('Person', {
+//   name: db.DataTypes.STRING,
+//   isBetaMember: {
+//     type: db.DataTypes.BOOLEAN,
+//     defaultValue: false,
+//     allowNull: false
+//   }
+// });
+queryInterface.addColumn('Person', 'petName', { type: db.DataTypes.STRING });
+
+
+
+  res.status(200).json({data:data})
+
+}
+async function makePostWithReactions(content, reactionTypes) {
+  const post = await db.post.create({ content });
+  await db.reaction.bulkCreate(
+      reactionTypes.map(type => ({ type, postId: post.id }))
+  );
+  return post;
+}
+
+const sub_query = async(req,res)=>{
+//  var  data = await makePostWithReactions('Hello World', [
+//     'Like', 'Angry', 'Laugh', 'Like', 'Like', 'Angry', 'Sad', 'Like'
+// ]);
+// await makePostWithReactions('My Second Post', [
+//     'Laugh', 'Laugh', 'Like', 'Laugh'
+// ]);
+
+
+var data = await db.post.findAll({
+  attributes: {
+      include: [
+          [
+              // Note the wrapping parentheses in the call below!
+             db.sequelize.literal(`(
+                  SELECT COUNT(*)
+                  FROM reactions AS reaction
+                  WHERE
+                      reaction.postId = post.id
+                      AND
+                      reaction.type = "Laugh"
+              )`),
+              'laughReactionsCount'
+          ]
+      ]
+  },
+  order: [
+    [db.sequelize.literal('laughReactionsCount'), 'DESC']
+]
+});
+res.status(200).json({data:data})
+
+}
+
 module.exports = {
   addUser,
   getUsers,
@@ -761,5 +840,7 @@ module.exports = {
   hooksUser,
   polyOneToMany,
   polymanyToMany,
+  queryInterface,
+  sub_query,
 
 };

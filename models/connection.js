@@ -136,24 +136,15 @@ db.tag_tagable = require("./tag_tagable")(DataTypes, sequelize ,Model);
 
 
 
-// db.image.hasMany(db.comment, {
-//   foreignKey: 'commentableId',
-//   constraints: false,
-//   scope: {
-//     commentableType: 'image'
-//   }
-// });
-// db.comment.belongsTo(db.image, { foreignKey: 'commentableId', constraints: false });
-
-// Define associations for Image and Comment
 db.image.hasMany(db.comment, {
   foreignKey: 'commentableId',
-  constraints: false, // Disable constraints
+  constraints: false,
   scope: {
     commentableType: 'image'
   }
 });
 db.comment.belongsTo(db.image, { foreignKey: 'commentableId', constraints: false });
+
 
 
 
@@ -211,6 +202,19 @@ db.tag.belongsToMany(db.viedo, {
   constraints: false
 });
 
-db.sequelize.sync({ force: true});
+db.post= sequelize.define('post', {
+  content: DataTypes.STRING
+}, { timestamps: false });
+
+db.reaction = sequelize.define('reaction', {
+  type: DataTypes.STRING
+}, { timestamps: false });
+
+db.post.hasMany(db.reaction);
+db.reaction.belongsTo(db.post);
+
+
+db.DataTypes = DataTypes;
+db.sequelize.sync({ force: false});
 
 module.exports = db;

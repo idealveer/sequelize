@@ -35,6 +35,9 @@ app.get('/hooks',userCtrl.hooksUser)
 app.get("/polyOneToMany",userCtrl.polyOneToMany)
 app.get("/polymanyToMany",userCtrl.polymanyToMany)
 
+app.get("/queryInterface",userCtrl.queryInterface)
+app.get("/sub_query",userCtrl.sub_query)
+
 
 
 
