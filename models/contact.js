@@ -1,7 +1,7 @@
 
 module.exports = (DataTypes, sequelize) => {
   const Contact = sequelize.define(
-    "contacts",
+    "contact",
     {
       // Model attributes are defined here
       permanent_address: {
@@ -12,9 +12,12 @@ module.exports = (DataTypes, sequelize) => {
         type: DataTypes.STRING,
         // allowNull defaults to true
       },
-      UserId: DataTypes.INTEGER
+      UserId: {
+        type:DataTypes.INTEGER,
+        allowNull: false,
+      }
     },
-    {
+    { underscored: true, 
       // Other model options go here
       tableName: "contact",
     }

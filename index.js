@@ -28,6 +28,12 @@ app.get('/loading',userCtrl.loadingUser)
 app.get('/eager',userCtrl.eagerUser)
 app.get('/creator',userCtrl.creatorUser)
 app.get('/m-n-associations',userCtrl.mnAssociations)
+app.get('/m2m2m',userCtrl.m2m2mUser)
+app.get('/scopes',userCtrl.scopeSUser)
+app.get('/transactions',userCtrl.transactionsUser)
+app.get('/hooks',userCtrl.hooksUser)
+app.get("/polyOneToMany",userCtrl.polyOneToMany)
+app.get("/polymanyToMany",userCtrl.polymanyToMany)
 
 
 

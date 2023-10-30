@@ -9,7 +9,7 @@ module.exports = (DataTypes, sequelize) => {
         unique: true,
         validate:{
           isAlpha: true, 
-          isLowercase: true,        // checks for lowercase
+          // isLowercase: true,        // checks for lowercase
 
         },
 
@@ -38,10 +38,23 @@ module.exports = (DataTypes, sequelize) => {
         set(value) {
           throw new Error('Do not try to set the `fullName` value!');
         }
-      }
+      },
+      status:DataTypes.INTEGER,
     },
+    
     {
+      // hooks: {
+      //   beforeValidate: (user, options) => {
+      //     user.lastName = 'happy';
+      //   },
+      //   afterValidate: (user, options) => {
+      //     user.status = 1;
+      //   }
+      // },
       // Other model options go here
+      underscored: true,   //naming change Naming Strategies
+
+
       tableName: "users",
       paranoid: true,
       deletedAt: 'soft_delete'
@@ -49,6 +62,30 @@ module.exports = (DataTypes, sequelize) => {
   );
 
   // `sequelize.define` also returns the model
-  console.log(User === sequelize.models.User); // true
+  // console.log(User === sequelize.models.User); // true
+/// hook use 2nd method
+  // User.addHook('beforeValidate', (user, options) => {
+  //   user.lastName = 'happy';
+  // });
+  
+  // User.addHook('afterValidate', 'someCustomName', (user, options) => {
+  //   user.status = 1;
+
+  // });
+
+  // Method 3 via the direct method
+User.beforeValidate(async (user, options) => {
+  user.lastName = 'rocky';
+});
+
+User.afterValidate('myHookAfter', (user, options) => {
+  user.status = 0;
+});
+// hook remove
+
+User.removeHook('afterValidate', 'myHookAfter');
+
+//  all remove hook 
+//  User.removeHook();
   return User;
 };
